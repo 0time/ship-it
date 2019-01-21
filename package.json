@@ -7,7 +7,7 @@
     "build": "yarn browserify main.js -o bundle.js",
     "jq-version": "node -e 'console.log(require(\"./package.json\").version)'",
     "postinstall": "./download.sh",
-    "start": "nodemon -x 'yarn build && http-server .'",
+    "start": "http-server .",
     "ship-it": "yarn build && tar -czf ship-it.$(yarn jq-version).tar.gz $(cat ship-it.list)",
     "test": "mocha --recursive test"
   },
