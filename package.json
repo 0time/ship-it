@@ -6,7 +6,7 @@
     "build": "yarn browserify main.js -o bundle.js",
     "jq-version": "node -e 'console.log(require(\"./package.json\").version)'",
     "postinstall": "./download.sh",
-    "start": "yarn build && http-server .",
+    "start": "yarn build && http-server -c-1 .",
     "ship-it": "yarn build && tar -czf ship-it.$(yarn jq-version).tar.gz $(cat ship-it.list)",
     "test": "mocha --recursive test"
   },
