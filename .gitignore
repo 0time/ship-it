@@ -1,0 +1,6 @@
+/assets/
+/node_modules/
+/bundle.js
+*.swp
+*.swo
+*.tar.gz
