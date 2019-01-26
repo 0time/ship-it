@@ -124,13 +124,15 @@ const main = () =>
     .then(responseHandler)
     // If rejection has a body, reject with body, otherwise reject with rejection
     .catch(rejection => Promise.reject(rejection.body || rejection))
-    // If no error, exit with a zero error code
-    .then(() => process.exit(0))
-    // Log and exit with a non-zero error code
+    // If no error, return a zero error code
+    .then(() => 0)
+    // Log and return a non-zero error code
     .catch(err => {
       console.error(err);
 
-      process.exit(-1);
-    });
+      return -1;
+    })
+    // exit with the error code
+    .then(code => process.exit(code));
 
 main();
