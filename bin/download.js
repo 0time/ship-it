@@ -101,7 +101,7 @@ const constructRequestOptions = etag => ({
     'If-None-Match': etag,
   },
   qs: {
-    paths: ['assets', 'test2'].join(','),
+    paths: ['assets'].join(','),
   },
   resolveWithFullResponse: true,
   uri,
