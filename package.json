@@ -5,7 +5,7 @@
   "scripts": {
     "build": "yarn browserify main.js -o bundle.js",
     "jq-version": "node -e 'console.log(require(\"./package.json\").version)'",
-    "postinstall": "yarn bin/download.js",
+    "postinstall": "node bin/download.js",
     "start": "yarn build && http-server -c-1 .",
     "ship-it": "yarn build && tar -czf ship-it.$(yarn jq-version).tar.gz $(cat ship-it.list)",
     "test": "mocha --recursive test"
@@ -15,10 +15,12 @@
     "browserify": "^16.2.3",
     "fs-extra": "^7.0.1",
     "http-server": "^0.11.1",
+    "minimist": "^1.2.0",
     "nodemon": "^1.18.9",
     "pixi.js": "^4.8.5",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
+    "sha256": "^0.2.0",
     "tar": "^4.4.8"
   },
   "devDependencies": {
