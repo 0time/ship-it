@@ -10,9 +10,17 @@ const fname = 'assets.tar.gz';
 const etagFile = `${fname}.etag`;
 const uri = 'https://phaser.0ti.me/tgz';
 
+const {saveEtag, verifyEtag, verifyXFileLengthHeader} = require('./lib/http');
+
+const logStatusCode = ({statusCode}) => console.error(`Status: ${statusCode}`);
+const logBodyLength = ({body}) =>
+  console.error(`Body Length: ${body && body.length}`);
+
 const status200Handler = response =>
   Promise.resolve(response)
-    .tap(saveEtag)
+    .tap(verifyXFileLengthHeader)
+    .tap(verifyEtag)
+    .tap(saveEtag(etagFile))
     .then(writeTarGz)
     .tap(file =>
       tar.x({
@@ -24,12 +32,7 @@ const status200Handler = response =>
       response,
     }));
 
-const status304Handler = response =>
-  Promise.resolve(response)
-    .tap(ensure304OrReject)
-    .then(ensureFileLengthMatches)
-    .then(ensureShaMatchesEtag)
-    .then(() => ({response}));
+const status304Handler = response => Promise.resolve(response);
 
 const otherStatusHandler = response => Promise.reject(response);
 
@@ -48,28 +51,6 @@ const writeTarGz = response => {
   if (response.statusCode === 304) return fname;
 
   return fse.writeFile(fname, Buffer.from(response.body)).then(() => fname);
-};
-const saveEtag = response => {
-  if (response.statusCode === 304) return response;
-
-  const etag = response.headers.etag;
-
-  return fse.writeFile(etagFile, etag).then(() => response);
-};
-
-const ensureFileLengthMatches = response => {
-  if (response.statusCode === 304) return response;
-
-  const {body, headers} = response;
-  const fileLength = headers['x-file-length'];
-
-  if (`${body.length}` !== fileLength) {
-    throw new Error(
-      `body length (${body.length}) did not match file length (${fileLength})`,
-    );
-  }
-
-  return response;
 };
 
 const ensureShaMatchesEtag = response => {
@@ -90,11 +71,6 @@ const ensureShaMatchesEtag = response => {
   return response;
 };
 
-const ensure304OrReject = response =>
-  response.statusCode === 304
-    ? Promise.resolve(response)
-    : Promise.reject(response);
-
 const constructRequestOptions = etag => ({
   encoding: null,
   headers: {
@@ -108,19 +84,22 @@ const constructRequestOptions = etag => ({
 });
 
 const loadSavedEtag = etagFilename =>
-  fse
-    .readFile(etagFilename)
+  Promise.resolve(etagFilename)
+    .then(fse.readFile)
     .then(etagBuffer => etagBuffer.toString())
     .catch(() => undefined); // default to an etag of undefined
 
 const main = () =>
-  loadSavedEtag()
+  loadSavedEtag(etagFile)
     // Build the request options
     .then(constructRequestOptions)
     // Make the request
     .then(rp)
     // Always resolve, let responseHandler decide next
     .catch(response => response)
+    // Print some useful information
+    .tap(logStatusCode)
+    .tap(logBodyLength)
     .then(responseHandler)
     // If rejection has a body, reject with body, otherwise reject with rejection
     .catch(rejection => Promise.reject(rejection.body || rejection))
