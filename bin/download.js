@@ -10,11 +10,13 @@ const fname = 'assets.tar.gz';
 const etagFile = `${fname}.etag`;
 const uri = 'https://phaser.0ti.me/tgz';
 
-const {saveEtag, verifyEtag, verifyXFileLengthHeader} = require('./lib/http');
-
-const logStatusCode = ({statusCode}) => console.error(`Status: ${statusCode}`);
-const logBodyLength = ({body}) =>
-  console.error(`Body Length: ${body && body.length}`);
+const {
+  logBodyLength,
+  logStatusCode,
+  saveEtag,
+  verifyEtag,
+  verifyXFileLengthHeader,
+} = require('./lib/http');
 
 const status200Handler = response =>
   Promise.resolve(response)

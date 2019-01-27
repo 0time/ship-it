@@ -9,6 +9,11 @@ const generateEtagError = (response, reason) =>
     }) - ${reason}`,
   );
 
+const logBodyLength = ({body}) =>
+  console.error(`Body Length: ${body && body.length}`);
+
+const logStatusCode = ({statusCode}) => console.error(`Status: ${statusCode}`);
+
 const saveEtag = etagFile => response => {
   if (response.statusCode === 304) return response;
 
@@ -49,6 +54,8 @@ const verifyXFileLengthHeader = response =>
   });
 
 module.exports = {
+  logBodyLength,
+  logStatusCode,
   saveEtag,
   verifyEtag,
   verifyXFileLengthHeader,
