@@ -41,13 +41,11 @@ const otherStatusHandler = response => Promise.reject(response);
 const responseHandlerMap = {
   200: status200Handler,
   304: status304Handler,
-  default: otherStatusHandler,
+  def: otherStatusHandler,
 };
 
 const responseHandler = response =>
-  (responseHandlerMap[response.statusCode] || responseHandler.default)(
-    response,
-  );
+  (responseHandlerMap[response.statusCode] || responseHandlerMap.def)(response);
 
 const writeTarGz = response => {
   if (response.statusCode === 304) return fname;
@@ -79,6 +77,7 @@ const constructRequestOptions = etag => ({
     'If-None-Match': etag,
   },
   qs: {
+    context: 'ship-it',
     paths: ['assets'].join(','),
   },
   resolveWithFullResponse: true,

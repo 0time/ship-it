@@ -10,6 +10,7 @@ const constructRequestOptions = (checksum_method, file) => checksum => ({
   qs: {
     checksum,
     checksum_method,
+    context: 'ship-it',
     file,
   },
   resolveWithFullResponse: true,

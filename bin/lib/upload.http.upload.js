@@ -16,6 +16,7 @@ const constructRequestOptions = ({
   formData: {
     checksum,
     checksum_method,
+    context: 'ship-it',
     file: {
       value: fs.createReadStream(file),
       options: {
