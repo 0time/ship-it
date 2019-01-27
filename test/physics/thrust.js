@@ -7,41 +7,46 @@ const MARGIN_OF_ERROR = 0.00000001;
 describe('thrust.js', () => {
   describe('calculateThrust(entityRot, thrustRot)', () => {
     const fixtures = [
-      {description: '(N, U) == N', input: [0, 0], expected: {x: 0, y: 1}},
       {
-        description: '(N, D) == S',
+        description: '(Facing North, `W` key) == North',
+        input: [0, 0],
+        expected: {x: 0, y: 1},
+      },
+      {
+        description: '(Facing North, `S` key) == South',
         input: [0, Math.PI],
         expected: {x: 0, y: -1},
       },
       {
-        description: '(E, U) == E',
-        input: [Math.PI / 2.0, 0],
+        description: '(Facing East, `W` key) == East',
+        input: [-Math.PI / 2.0, 0],
         expected: {x: 1, y: 0},
       },
       {
-        description: '(W, U) == W',
+        description: '(Facing West, `W` key) == West',
         input: [(3.0 / 2.0) * Math.PI, 0],
-        expected: {x: -1, y: 0},
+        expected: {x: 1, y: 0},
       },
       {
-        description: '(W, L) == S',
+        description: '(Facing West, `A` key) == South',
         input: [(3.0 / 2.0) * Math.PI, (3.0 / 2.0) * Math.PI],
         expected: {x: 0, y: -1},
       },
       {
-        description: '(120, D) == ?',
+        description:
+          '(Facing 120 clockwise from North, `S` key) == 60 counter-clockwise from North',
         input: [(4.0 / 3.0) * Math.PI, Math.PI],
         expected: {
-          x: Math.sin((7.0 / 3.0) * Math.PI),
-          y: Math.cos((7.0 / 3.0) * Math.PI),
+          x: Math.sin(-(7.0 / 3.0) * Math.PI),
+          y: Math.cos(-(7.0 / 3.0) * Math.PI),
         },
       },
       {
         description: '(150, D) == ?',
         input: [(11.0 / 6.0) * Math.PI, Math.PI],
         expected: {
-          x: Math.sin((17.0 / 6.0) * Math.PI),
-          y: Math.cos((17.0 / 6.0) * Math.PI),
+          x: Math.sin(-(17.0 / 6.0) * Math.PI),
+          y: Math.cos(-(17.0 / 6.0) * Math.PI),
         },
       },
     ];
