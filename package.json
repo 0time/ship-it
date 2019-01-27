@@ -3,19 +3,22 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "build": "yarn browserify main.js -o bundle.js",
+    "build": "node bin/build.js",
+    "deploy": "node bin/deploy.js",
+    "download": "node bin/download.js",
     "jq-version": "node -e 'console.log(require(\"./package.json\").version)'",
-    "postinstall": "node bin/download.js",
-    "start": "yarn build && http-server -c-1 .",
-    "ship-it": "yarn build && tar -czf ship-it.$(yarn jq-version).tar.gz $(cat ship-it.list)",
-    "test": "mocha --recursive test"
+    "postinstall": "yarn download",
+    "start": "node local.js",
+    "ship-it": "yarn deploy",
+    "test": "mocha --recursive test",
+    "upload": "node bin/upload.js"
   },
   "dependencies": {
     "bluebird": "^3.5.3",
     "browserify": "^16.2.3",
     "fs-extra": "^7.0.1",
     "http-server": "^0.11.1",
-    "minimist": "^1.2.0",
+    "minify": "^4.1.0",
     "nodemon": "^1.18.9",
     "pixi.js": "^4.8.5",
     "request": "^2.88.0",
@@ -25,6 +28,7 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "express": "^4.16.4",
     "mocha": "^5.2.0",
     "sinon": "^7.2.3"
   }

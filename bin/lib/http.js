@@ -2,6 +2,8 @@ const Promise = require('bluebird');
 const fse = require('fs-extra');
 const sha256 = require('sha256');
 
+const MAX_BODY_LENGTH = 10000;
+
 const generateEtagError = (response, reason) =>
   new Error(
     `Unable to verify etag (${response.headers.etag}) with x-etag-fn (${
@@ -11,6 +13,16 @@ const generateEtagError = (response, reason) =>
 
 const logBodyLength = ({body}) =>
   console.error(`Body Length: ${body && body.length}`);
+
+const logResponse = ({body, statusCode}) =>
+  console.error({
+    body:
+      body.length > MAX_BODY_LENGTH
+        ? `body too long (${body.length} > ${MAX_BODY_LENGTH})`
+        : body,
+    bodyLength: body.length,
+    statusCode,
+  });
 
 const logStatusCode = ({statusCode}) => console.error(`Status: ${statusCode}`);
 
@@ -55,6 +67,7 @@ const verifyXFileLengthHeader = response =>
 
 module.exports = {
   logBodyLength,
+  logResponse,
   logStatusCode,
   saveEtag,
   verifyEtag,

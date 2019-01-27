@@ -5,7 +5,7 @@ const app = new PIXI.Application();
 document.getElementById('game').appendChild(app.view);
 
 // create a new Sprite from an image path
-var hubble = PIXI.Sprite.fromImage('assets/final/hubble.png');
+const hubble = PIXI.Sprite.fromImage('assets/final/hubble.png');
 
 // center the sprite's anchor point
 hubble.anchor.set(0.5);
@@ -44,13 +44,3 @@ app.ticker.add(delta => {
     entity.rotation += delta * entity.va;
   });
 });
-
-/*
-// Listen for animate update
-app.ticker.add(function(delta) {
-  // just for fun, let's rotate mr rabbit a little
-  // delta is 1 if running at 100% performance
-  // creates frame-independent transformation
-  hubble.rotation += 0.01 * delta;
-});
-*/
