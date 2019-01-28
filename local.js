@@ -31,7 +31,13 @@ let timeout = null;
 const tmpBundleFile = `tmp.${bundleFile}`;
 const tmpMinifiedFile = `tmp.${minifiedFile}`;
 
-const ignore = [tmpBundleFile, tmpMinifiedFile, bundleFile, minifiedFile];
+const ignore = [
+  tmpBundleFile,
+  tmpMinifiedFile,
+  bundleFile,
+  minifiedFile,
+  '.git',
+];
 
 const watchEvents = [];
 
@@ -83,8 +89,19 @@ const rebuild = e => {
     });
 };
 
+const oneIncludesTheOther = (a, b) => a.includes(b) || b.includes(a);
+
+const isIgnored = filename =>
+  ignore.find(each => oneIncludesTheOther(each, filename)) !== undefined;
+
 nodeWatch('./', {recursive: true}, (eventType, filename) => {
-  if (enableWatchEvents && !ignore.includes(filename)) {
+  if (filename === 'local.js') {
+    console.error('You must restart me!');
+
+    process.exit(0);
+  }
+
+  if (enableWatchEvents && !isIgnored(filename)) {
     watchEvents.push({eventType, filename});
 
     setTimeout(check, 200);
