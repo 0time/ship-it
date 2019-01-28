@@ -2,6 +2,7 @@ const $ = require('jquery');
 
 const PIXI = require('pixi.js');
 const packageJson = require('./package.json');
+const moveableCreator = require('./src/moveable_creator');
 
 const gameDiv = $('#game');
 
@@ -44,6 +45,8 @@ app.stage.addChild(hubble);
 const context = {
   constants: {
     angularThrustMultiplier: 0.001,
+    maxAngularVelocity: 1,
+    maxVelocity: 10,
     thrust: 0.01,
   },
   entities: [hubble],
@@ -52,16 +55,21 @@ const context = {
   unregister: fn => app.ticker.remove(fn),
 };
 
+const makeAMoveable = moveableCreator(context);
+
+context.entities.forEach(entity => {
+  entity.active = true;
+  entity.ticks = [makeAMoveable(entity)];
+});
+
 const {configureControls} = require('./src/controls');
+
+const logged = {};
 
 configureControls(context);
 
-console.log(hubble);
-
 app.ticker.add(delta => {
-  context.entities.forEach(entity => {
-    entity.x += delta * entity.vx;
-    entity.y += delta * entity.vy;
-    entity.rotation += delta * entity.va;
-  });
+  context.entities.forEach(entity =>
+    entity.active ? entity.ticks.forEach(tick => tick(delta)) : null,
+  );
 });

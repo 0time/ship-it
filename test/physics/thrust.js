@@ -1,8 +1,8 @@
 const {expect} = require('chai');
+
+const {marginOfError} = require('../config');
 const {radiansFromDegrees} = require('../../src/math/trig');
 const {calculateThrust} = require('../../src/physics/thrust');
-
-const MARGIN_OF_ERROR = 0.00000001;
 
 describe('thrust.js', () => {
   describe('calculateThrust(entityRot, thrustRot)', () => {
@@ -54,8 +54,8 @@ describe('thrust.js', () => {
     const testFn = (input, expected) => {
       const actual = calculateThrust(input[0])(input[1]);
 
-      expect(actual.x).to.be.closeTo(expected.x, MARGIN_OF_ERROR);
-      expect(actual.y).to.be.closeTo(expected.y, MARGIN_OF_ERROR);
+      expect(actual.x).to.be.closeTo(expected.x, marginOfError);
+      expect(actual.y).to.be.closeTo(expected.y, marginOfError);
     };
 
     fixtures.forEach(({description, expected, input}) =>
