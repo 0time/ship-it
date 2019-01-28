@@ -37,6 +37,7 @@ const ignore = [
   bundleFile,
   minifiedFile,
   '.git',
+  'test',
 ];
 
 const watchEvents = [];
