@@ -1,31 +1,29 @@
+const $ = require('jquery');
+
 const PIXI = require('pixi.js');
 const packageJson = require('./package.json');
 
-const gameDiv = document.getElementById('game');
-const infoDiv = document.getElementById('game-info');
+const gameDiv = $('#game');
+
 const app = new PIXI.Application();
 
-const newA = (href, value) => {
-  const ele = document.createElement('a');
+gameDiv.append(app.view);
 
-  ele.innerText = value || href;
+const {
+  repository: {url},
+  version,
+} = packageJson;
 
-  ele.setAttribute('href', href);
+const repoLinkDiv = $('<div />', {
+  id: 'repository-link',
+  text: 'Source: ',
+}).appendTo('#game-info');
 
-  return ele;
-};
+$('<a />', {text: url})
+  .attr('href', url)
+  .appendTo(repoLinkDiv);
 
-const newP = paragraph => {
-  const ele = document.createElement('p');
-
-  ele.innerText = paragraph;
-
-  return ele;
-};
-
-gameDiv.appendChild(app.view);
-infoDiv.appendChild(newA(`${packageJson.repository.url}`));
-infoDiv.appendChild(newP(`Version: ${packageJson.version}`));
+$('<div />', {text: `Version: v${version}`}).appendTo('#game-info');
 
 // create a new Sprite from an image path
 const hubble = PIXI.Sprite.fromImage('assets/final/hubble.png');
