@@ -6,12 +6,11 @@ const {
   build: {inputFile, bundleFile, minifiedFile},
 } = require('../config');
 
-build(inputFile, bundleFile, minifiedFile)
+build(inputFile, minifiedFile, false)
   .then(({bundleJs, bundleMinJs, file, version}) => {
     console.error(`
 Your version ${version} tar.gz package can be found at ${process.cwd()}/${file}
 
-Your minified bundle file can be found at ${process.cwd()}/${bundleMinJs}.
 Your bundle file can be found at ${process.cwd()}/${bundleJs}.
 
 To deploy and see instructions for playing the deployed instance, run:

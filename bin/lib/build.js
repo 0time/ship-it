@@ -44,7 +44,11 @@ const build = (inputFile, outputFile, outputMinifiedFile) =>
         }),
     )
     .tap(({bundleJs, bundleMinJs}) =>
-      minify(bundleJs).then(minified => fse.writeFile(bundleMinJs, minified)),
+      bundleMinJs
+        ? minify(bundleJs).then(minified =>
+            fse.writeFile(bundleMinJs, minified),
+          )
+        : null,
     );
 
 module.exports = build;

@@ -1,8 +1,31 @@
 const PIXI = require('pixi.js');
+const packageJson = require('./package.json');
 
+const gameDiv = document.getElementById('game');
+const infoDiv = document.getElementById('game-info');
 const app = new PIXI.Application();
 
-document.getElementById('game').appendChild(app.view);
+const newA = (href, value) => {
+  const ele = document.createElement('a');
+
+  ele.innerText = value || href;
+
+  ele.setAttribute('href', href);
+
+  return ele;
+};
+
+const newP = paragraph => {
+  const ele = document.createElement('p');
+
+  ele.innerText = paragraph;
+
+  return ele;
+};
+
+gameDiv.appendChild(app.view);
+infoDiv.appendChild(newA(`${packageJson.repository.url}`));
+infoDiv.appendChild(newP(`Version: ${packageJson.version}`));
 
 // create a new Sprite from an image path
 const hubble = PIXI.Sprite.fromImage('assets/final/hubble.png');

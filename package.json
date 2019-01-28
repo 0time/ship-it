@@ -2,13 +2,17 @@
   "name": "ship-it",
   "version": "0.1.0",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/0time/ship-it"
+  },
   "scripts": {
     "build": "node bin/build.js",
     "deploy": "node bin/deploy.js",
     "download": "node bin/download.js",
     "jq-version": "node -e 'console.log(require(\"./package.json\").version)'",
     "postinstall": "yarn download",
-    "start": "node local.js",
+    "start": "yarn build && node local.js",
     "ship-it": "yarn deploy",
     "test": "mocha --recursive test",
     "upload": "node bin/upload.js"

@@ -62,13 +62,8 @@ const rebuild = e => {
 
   enableWatchEvents = false;
 
-  return build(inputFile, tmpBundleFile, tmpMinifiedFile)
-    .then(({bundleJs, bundleMinJs}) =>
-      Promise.all([
-        fse.rename(bundleJs, bundleFile),
-        fse.rename(bundleMinJs, minifiedFile),
-      ]),
-    )
+  return build(inputFile, tmpMinifiedFile, false)
+    .then(({bundleJs, bundleMinJs}) => fse.rename(bundleJs, minifiedFile))
     .then(() => {
       enableWatchEvents = true;
 
