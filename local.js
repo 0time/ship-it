@@ -3,6 +3,7 @@ const build = require('./bin/lib/build');
 const express = require('express');
 const fs = require('fs');
 const fse = require('fs-extra');
+const nodeWatch = require('node-watch');
 const path = require('path');
 
 const {
@@ -30,7 +31,7 @@ let timeout = null;
 const tmpBundleFile = `tmp.${bundleFile}`;
 const tmpMinifiedFile = `tmp.${minifiedFile}`;
 
-const ignore = [tmpBundleFile, tmpMinifiedFile];
+const ignore = [tmpBundleFile, tmpMinifiedFile, bundleFile, minifiedFile];
 
 const watchEvents = [];
 
@@ -82,7 +83,7 @@ const rebuild = e => {
     });
 };
 
-fs.watch('./', {recursive: true}, (eventType, filename) => {
+nodeWatch('./', {recursive: true}, (eventType, filename) => {
   if (enableWatchEvents && !ignore.includes(filename)) {
     watchEvents.push({eventType, filename});
 
