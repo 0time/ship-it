@@ -55,33 +55,45 @@ describe('velocity.js', () => {
         expect(actual.vy).to.equal(vy),
       ]);
 
-    it('3,4,5 triangle limited to 2.5', () =>
+    it('3,4 triangle limited to 2.5', () =>
       testPromise(3, 4, 2.5)
         .tap(expectPythagoreanMaxSpeed)
         .tap(expectSignConsistency)
         .tap(expectTargetVectorConsistency));
 
-    it('3,4,5 triangle limited to 10', () =>
+    it('3,4 triangle limited to 10', () =>
       testPromise(3, 4, 10)
         .tap(expectPythagoreanMaxSpeed)
         .tap(expectSignConsistency)
         .tap(expectTargetVectorConsistency)
         .tap(expectUnchanged));
 
-    it('-3,4,5 limited to 2.5', () =>
+    it('-3,4 limited to 2.5', () =>
       testPromise(-3, 4, 2.5)
         .tap(expectPythagoreanMaxSpeed)
         .tap(expectSignConsistency)
         .tap(expectTargetVectorConsistency));
 
-    it('-3,-4,5 limited to 2.5', () =>
+    it('-3,-4 limited to 2.5', () =>
       testPromise(-3, -4, 2.5)
         .tap(expectPythagoreanMaxSpeed)
         .tap(expectSignConsistency)
         .tap(expectTargetVectorConsistency));
 
-    it('3,-4,5 limited to 2.5', () =>
+    it('3,-4 limited to 2.5', () =>
       testPromise(-3, -4, 2.5)
+        .tap(expectPythagoreanMaxSpeed)
+        .tap(expectSignConsistency)
+        .tap(expectTargetVectorConsistency));
+
+    it('0.1,0.2 limited to 0.001', () =>
+      testPromise(0.1, 0.2, 0.001)
+        .tap(expectPythagoreanMaxSpeed)
+        .tap(expectSignConsistency)
+        .tap(expectTargetVectorConsistency));
+
+    it('999,999 limited to 9', () =>
+      testPromise(999, 999, 9)
         .tap(expectPythagoreanMaxSpeed)
         .tap(expectSignConsistency)
         .tap(expectTargetVectorConsistency));
