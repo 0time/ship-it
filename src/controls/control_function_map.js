@@ -1,4 +1,4 @@
-const {calculateThrust} = require('./physics/thrust');
+const {calculateThrust} = require('../physics/thrust');
 
 const thrustHelper = thrustRotation => context => {
   const thrust = calculateThrust(context.player.rotation)(thrustRotation);

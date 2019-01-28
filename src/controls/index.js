@@ -2,7 +2,7 @@
 // user defined controls when present, reverting to defaults when absent
 const controlMapKeys = require('./control_map_keys');
 const controlFunctionMap = require('./control_function_map');
-const {keyboard} = require('./keyboard');
+const {keyboard} = require('./inputs/keyboard');
 
 const configuredKeys = [];
 
