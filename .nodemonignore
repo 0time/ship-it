@@ -1,1 +1,12 @@
-.gitignore
+assets
+bundle.js
+bundle.min.js
+config.js
+local-tools
+node_modules
+tmp.bundle.js
+tmp.bundle.min.js
+*.swp
+*.swo
+*.tar.gz
+*.etag
