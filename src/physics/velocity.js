@@ -1,8 +1,10 @@
-const {logOnce} = require('../util/logging');
+const {logAtInterval, logOnce} = require('../util/logging');
 const {degreesFromRadians} = require('../math/trig');
 
+const getSpeed = ({vx, vy}) => Math.sqrt(vx * vx + vy * vy);
+
 const capSpeed = maxSpeed => entity => {
-  const speed = Math.sqrt(entity.vx * entity.vx + entity.vy * entity.vy);
+  const speed = getSpeed(entity);
 
   if (speed > maxSpeed) logOnce('capSpeed:7')(`Exceed max speed!`);
 
@@ -20,4 +22,5 @@ const capAngularSpeed = maxAngularSpeed => entity =>
 module.exports = {
   capAngularSpeed,
   capSpeed,
+  getSpeed,
 };

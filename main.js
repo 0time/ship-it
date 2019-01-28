@@ -1,6 +1,12 @@
 const $ = require('jquery');
 
 const PIXI = require('pixi.js');
+
+const configured = require('./src/gui/configured');
+const {logOnce} = require('./src/util/logging');
+const {getSpeed} = require('./src/physics/velocity');
+const {toSpeedUnits} = require('./src/gui/units');
+const config = require('./config');
 const packageJson = require('./package.json');
 const moveableCreator = require('./src/moveable_creator');
 
@@ -12,8 +18,11 @@ gameDiv.append(app.view);
 
 const {
   repository: {url},
+  pretty,
   version,
 } = packageJson;
+
+$('.pretty-title').text(pretty);
 
 const repoLinkDiv = $('<div />', {
   id: 'repository-link',
@@ -42,18 +51,16 @@ hubble.va = 0; // Angular velocity
 
 app.stage.addChild(hubble);
 
-const context = {
-  constants: {
-    angularThrustMultiplier: 0.001,
-    maxAngularVelocity: 1,
-    maxVelocity: 10,
-    thrust: 0.01,
+const context = Object.assign(
+  {
+    app,
+    entities: [hubble],
+    player: hubble,
+    register: fn => app.ticker.add(fn),
+    unregister: fn => app.ticker.remove(fn),
   },
-  entities: [hubble],
-  player: hubble,
-  register: fn => app.ticker.add(fn),
-  unregister: fn => app.ticker.remove(fn),
-};
+  config,
+);
 
 const makeAMoveable = moveableCreator(context);
 
@@ -68,8 +75,14 @@ const logged = {};
 
 configureControls(context);
 
+context.gui.list.forEach(guiItem => configured(context)(guiItem.name));
+
 app.ticker.add(delta => {
   context.entities.forEach(entity =>
     entity.active ? entity.ticks.forEach(tick => tick(delta)) : null,
   );
+
+  if (context.gui.speed !== undefined) {
+    context.gui.speed.text = `Speed: ${toSpeedUnits(getSpeed(context.player))}`;
+  }
 });

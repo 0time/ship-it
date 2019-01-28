@@ -13,7 +13,29 @@ const logNTimes = ({key, max}) => contents => {
 
 const logOnce = key => logNTimes({key, max: 1});
 
+// Performs a log only after minInterval time has passed since the last log
+// event
+const logAtInterval = ({key, minimal, minInterval}) => contents => {
+  const last = logTracker[key] || 0;
+  const now = Date.now();
+
+  if (now - last > minInterval) {
+    logTracker[key] = now;
+
+    if (minimal) {
+      console.error(contents);
+    } else {
+      console.error({
+        contents,
+        key,
+        minInterval,
+      });
+    }
+  }
+};
+
 module.exports = {
+  logAtInterval,
   logNTimes,
   logOnce,
 };
