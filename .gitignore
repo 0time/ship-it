@@ -1,8 +1,9 @@
 /assets/
-/node_modules/
 /bundle.js
 /bundle.min.js
 /config.js
+/local-tools/
+/node_modules/
 *.swp
 *.swo
 *.tar.gz
