@@ -7,6 +7,7 @@ function keyboard(context, value) {
   key.press = undefined;
   key.release = undefined;
   key.held = undefined;
+  key.registered = false;
 
   //The `downHandler`
   key.downHandler = event => {
@@ -15,7 +16,11 @@ function keyboard(context, value) {
         key.press();
       }
 
-      context.register(key.held);
+      if (key.registered === false) {
+        key.registered = true;
+
+        context.register(key.held);
+      }
 
       key.isDown = true;
       key.isUp = false;
@@ -30,7 +35,11 @@ function keyboard(context, value) {
         key.release();
       }
 
-      context.unregister(key.held);
+      if (key.registered === true) {
+        key.registered = false;
+
+        context.unregister(key.held);
+      }
 
       key.isDown = false;
       key.isUp = true;
