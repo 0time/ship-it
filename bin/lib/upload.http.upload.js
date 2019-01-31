@@ -5,6 +5,7 @@ const path = require('path');
 const rp = require('request-promise');
 const sha256 = require('sha256');
 
+const context = 'ship-it';
 const uri = 'https://phaser.0ti.me/upload';
 
 const constructRequestOptions = ({
@@ -16,7 +17,7 @@ const constructRequestOptions = ({
   formData: {
     checksum,
     checksum_method,
-    context: 'ship-it',
+    context,
     file: {
       value: fs.createReadStream(file),
       options: {
@@ -30,6 +31,7 @@ const constructRequestOptions = ({
   qs: {
     checksum,
     checksum_method,
+    context,
     file,
   },
   resolveWithFullResponse: true,

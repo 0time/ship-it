@@ -35,8 +35,38 @@ $('<a />', {text: url})
 
 $('<div />', {text: `Version: v${version}`}).appendTo('#game-info');
 
+const context = Object.assign(
+  {
+    app,
+    entities: [],
+    PIXI,
+    sprites: {
+      hubble: PIXI.Sprite.fromImage('assets/final/hubble.png'),
+    },
+    starField: {
+      contents: [],
+      size: 100,
+    },
+    textures: {
+      star: PIXI.Texture.fromImage('assets/final/star.png'),
+    },
+    register: fn => app.ticker.add(fn),
+    unregister: fn => app.ticker.remove(fn),
+  },
+  config,
+);
+
+const {createStarField} = require('./src/background/star_plot');
+
+createStarField(context);
+
+console.error(context.starField.contents);
+
 // create a new Sprite from an image path
 const hubble = PIXI.Sprite.fromImage('assets/final/hubble.png');
+
+context.player = hubble;
+context.entities.push(hubble);
 
 // center the sprite's anchor point
 hubble.anchor.set(0.5);
@@ -50,17 +80,6 @@ hubble.vy = 0;
 hubble.va = 0; // Angular velocity
 
 app.stage.addChild(hubble);
-
-const context = Object.assign(
-  {
-    app,
-    entities: [hubble],
-    player: hubble,
-    register: fn => app.ticker.add(fn),
-    unregister: fn => app.ticker.remove(fn),
-  },
-  config,
-);
 
 const makeAMoveable = moveableCreator(context);
 
