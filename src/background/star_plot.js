@@ -1,6 +1,5 @@
 const addToAppStage = context => star => {
   context.app.stage.addChild(star);
-  context.starField.contents.push(star);
 
   return star;
 };

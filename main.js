@@ -43,10 +43,6 @@ const context = Object.assign(
     sprites: {
       hubble: PIXI.Sprite.fromImage('assets/final/hubble.png'),
     },
-    starField: {
-      contents: [],
-      size: 100,
-    },
     textures: {
       star: PIXI.Texture.fromImage('assets/final/star.png'),
     },
@@ -58,7 +54,7 @@ const context = Object.assign(
 
 const {createStarField} = require('./src/background/star_plot');
 
-createStarField(context);
+context.starField.contents = createStarField(context);
 
 console.error(context.starField.contents);
 
